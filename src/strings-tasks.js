@@ -376,8 +376,8 @@ function invertCase(/* str */) {
  *   getStringFromTemplate('John','Doe') => 'Hello, John Doe!'
  *   getStringFromTemplate('Chuck','Norris') => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -390,8 +390,12 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  let result = '';
+  const startIndex = 7;
+  const endIndex = value.length - 1;
+  result = value.slice(startIndex, endIndex);
+  return result;
 }
 
 /**
@@ -405,8 +409,8 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.replace(/[<>"'()[\]]/g, '');
 }
 
 /**
@@ -444,8 +448,19 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  let result = '';
+  for (let i = 0; i < str.length; i += 1) {
+    const charCode = str.charCodeAt(i);
+    if (charCode >= 65 && charCode <= 90) {
+      result += String.fromCharCode(((charCode - 65 + 13) % 26) + 65);
+    } else if (charCode >= 97 && charCode <= 122) {
+      result += String.fromCharCode(((charCode - 97 + 13) % 26) + 97);
+    } else {
+      result += str[i];
+    }
+  }
+  return result;
 }
 
 /**
@@ -472,8 +487,33 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  let card;
+  let sign;
+  const signs = ['♣', '♦', '♥', '♠'];
+  const cards = [
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+  ];
+  if (value.length === 3) {
+    [card, sign] = [value.slice(0, 2), value[2]];
+  } else {
+    [card, sign] = [value[0], value[1]];
+  }
+  const cardNum = cards.findIndex((el) => el === card) + 1;
+  const signNum = signs.findIndex((el) => el === sign);
+  return signNum * 13 + (cardNum - 1);
 }
 
 module.exports = {
